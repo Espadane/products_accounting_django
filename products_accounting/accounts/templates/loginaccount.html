@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid col-8 justify-content-center">
+<form method="post">
+<p class="alert alert-secondary">Если у вас нет учетных данных обратитесь к администратору.</p>
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit" class="btn btn-outline-primary">Подтвердить</button>
+</form>
+</div>
+{% endblock %}

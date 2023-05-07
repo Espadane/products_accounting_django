@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Сравнить остатки из 1С с остатками в базе данных</h1>
+<p class="alert alert-primary">Загрузите файл xlsx и программа выведет расхождения с учетом в базе данных</p>
+<p class="alert alert-danger">Обратите внимание, что функция еще тестируется. Из-за того что файлы отчетов 1С не стандартизированы, возможны и очень вероятны ошибки. Проверяйте работу программы очень внимательно, при возникновении ошибок и не точностей сообщайте <a href="https://t.me/espadane">администратору</a>.</p>
+{% if messages %}
+        {% for message in messages %}
+            <p{% if message.tags %} class="{{ message.tags }} messages alert alert-danger text-center"{% endif %}>{{ message }}</p>
+        {% endfor %}
+{% endif %}
+<p class="alert-danger">{{ message }}</p>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="store-select">Выберите торговую точку:</label>
+        <select class="form-control" id="store-select" name="store">
+          {% for store in stores %}
+            <option value="{{ store }}">{{ store }}</option> 
+          {% endfor %}
+        </select>
+    </div>
+      <div class="form-label">
+        <label for="stock_products_file" class="m-auto">Загрузите файл c остатками товара с расширением .xlsx:</label>
+      </div>
+      <div class="form-text">
+        <input type="file" name="stock_products_file" id="file" class="form-control-file">
+      </div>
+        <button type="submit" class="btn btn-primary mt-2">Загрузить</button>
+    </form>
+{% endblock content %}

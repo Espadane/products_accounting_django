@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <p class="alert alert-primary text-center">Всего различий: {{ diff_products|length }} шт.</p>
+        <div class="table-responsive mb-5"> 
+            <table class="table table-sm mb-3">
+                <thead class="text-center">
+                    <tr>
+                        <th>Название</th>
+                        <th>Причина</th>
+                        <th>Кол-во база</th>
+                        <th>Кол-во файл</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for product in diff_products %}
+                            <td>{{ forloop.counter }}. {{ product.product_name }}</td>
+                            <td class="text-center">{{ product.reason }}</td>
+                            <td class="text-center">{{ product.product_amount_db }}</td>
+                            <td class="text-center">{{ product.product_amount_file }}</td>
+                        </tbody>
+                {% endfor %}
+            </table>
+        <button class="btn btn-primary mt-2"><a class="text-reset fw-bold text-decoration-none" href="{% url 'home' %}">На главную</a></button>
+        </div>
+    </div>
+{% endblock %}

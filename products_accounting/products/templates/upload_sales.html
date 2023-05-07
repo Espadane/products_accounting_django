@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Добавить продажи из CSV файла</h1>
+{% if messages %}
+        {% for message in messages %}
+            <p{% if message.tags %} class="{{ message.tags }} messages alert alert-danger text-center"{% endif %}>{{ message }}</p>
+        {% endfor %}
+{% endif %}
+<p class="alert-danger">{{ message }}</p>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="store-select">Выберите торговую точку:</label>
+        <select class="form-control" id="store-select" name="store">
+          {% for store in stores %}
+            <option value="{{ store }}">{{ store }}</option> 
+          {% endfor %}
+        </select>
+    </div>
+      <div class="form-label">
+        <label for="sales_file" class="m-auto">Загрузите файл c продажами с расширением .csv:</label>
+      </div>
+      <div class="form-text">
+        <input type="file" name="sales_file" id="file" class="form-control-file">
+      </div>
+        <button type="submit" class="btn btn-primary mt-2">Загрузить</button>
+    </form>
+{% endblock content %}

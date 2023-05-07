@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{{ inventory_id }}
+    <div class="container">
+        <h3 class="text-center my-3">Перемещения: {{ product_inventory }} "{{ store_name }}"</h3>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="m-0">
+                В наличии: {{ product_inventory.quantity }} шт.
+                <br>
+                {% if product_inventory.minimum_quantity > 0 %}
+                    Минимальное необходимое количество: {{ product_inventory.minimum_quantity }} шт.
+                {% endif %}
+            </h4>
+            <a href="{% url 'create_transfer' product_id %}" class="btn btn-outline-primary btn-sm">
+                Изменить
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr class="text-center">
+                        <th>Дата</th>
+                        <th>Было</th>
+                        <th>Изменение</th>
+                        <th>Стало</th>
+                        <th>Продавец</th>
+                        <th>Комментарий</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transfer in transfers %}
+                        <tr class="text-center">
+                            <td>{{ transfer.date|date:"H:i d.m.y" }}</td>
+                            <td>
+                                {{ transfer.starting_quantity }}
+                            </td>
+                            <td>
+                                {% if transfer.difference > 0 %}
+                                <p style="color: green;">+{{transfer.difference}}</p>
+                                {% elif transfer.difference < 0 %}
+                                <p style="color: red;">{{transfer.difference}}</p>
+                                {% else %}
+                                0
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ transfer.ending_quantity}}
+                            </td>
+                            <td>{{transfer.user.last_name}} {{ transfer.user.first_name }}</td>
+                            <td>
+                                {{ transfer.comment }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

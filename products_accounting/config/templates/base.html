@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>Учет товаров</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Учет товаров</a>
+            {% if user.is_authenticated %}
+            <button class="navbar-toggler" type="button" 
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          ><span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ms-auto">
+                <a href="{% url 'home' %}" class="nav-link">Остатки</a>
+                <a href="{% url 'upload_sales' %}" class="nav-link">Добавить продажи</a>
+                <a href="{% url 'upload_receipt' %}" class="nav-link">Добавить приход</a>
+                <a href="{% url 'compare_products' %}" class="nav-link">Сравнить остатки</a>
+                {% if user.is_staff %}
+                  <a href="{% url 'upload_stock_products' %}" class="nav-link">Добавить начальные остатки</a>
+                {% endif %}
+                <a href="{% url 'logoutaccount' %}" class="nav-link">Выйти ({{ user.first_name }} {{ user.last_name }})</a>
+              {% endif %}
+          </div>
+    </nav>
+    <div class="container">
+        {% block content %}
+        {% endblock content %}
+      </div>
+      <div class="flex-grow-1"></div>
+      <footer class="text-center text-lg-start bg-dark text-muted mt-3">
+        <div class="text-center p-4">
+          Создано - 
+          <a href="https://t.me/espadane" class="text-reset fw-bold text-decoration-none" target="_blank">Espadane</a>
+        </div>
+      </footer>
+</body>
+</html>

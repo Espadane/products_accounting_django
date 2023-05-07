@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form method="post">
+    <h3>Товар: {{ products.name }}</h3>
+    <h3>Отдел: {{ store_name }}</h3>
+    <h3>Сейчас в наличии: {{ products.amount }} шт.</h3>
+    <p class="alert alert-secondary">Введите положительное число - приход, отрицательное - расход.</p>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p class="alert alert-danger">Внимание:
+        Проверьте корректность введенных данных. После отправки внесённые изменения корректировке не подлежат.</p>
+    <button type="submit" class="btn btn-dark">Подтвердить</button>
+</form>
+{% if messages %}
+        {% for message in messages %}
+            <p{% if message.tags %} class="{{ message.tags }} messages alert alert-secondary text-center"{% endif %}>{{ message }}</p>
+        {% endfor %}
+{% endif %}
+{% endblock content %}

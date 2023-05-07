@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<form method="post">
+{% csrf_token %}
+    <div class="container">
+        <p class="alert alert-dark text-center">Вы загрузили файл с продажами "{{ store }}"</p>
+        {% if permission == 403 %}
+            <p class="alert alert-danger text-center">В базе данных отсутствуют некоторые товары, проверьте правильность данных и свяжитесь с руководством. <br>Внесение данных из этого файла запрещенно</p>
+        {% elif permission == 400 %}
+            <p class="alert alert-danger text-center">Если вы добавите данные из этого файла некоторые позиции получат отрицательное количество. Вы можете добавить данные, но под вашу ответственность. Так же об этом необходимо сообщить руководству.</p>
+        {% elif permission == 200 %}
+            <p class="alert alert-primary text-center">Внимание: Проверьте корректность введенных данных. После отправки внесённые изменения корректировке не подлежат.</p>
+        {% endif %}
+        <p class="alert alert-primary text-center">Всего позиций в файле: {{ sales_changes|length }} шт.</p>
+        <div class="table-responsive mb-5"> 
+            <table class="table table-sm mb-3">
+                <thead class="text-center">
+                    <tr>
+                        <th>Название</th>
+                        <th>Было</th>
+                        <th>Расход</th>
+                        <th>Станет</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for sale_change in sales_changes %}
+                    {% if sale_change.result == None %}
+                    <tr class="table-danger">
+                        {% elif sale_change.result < 0 %}
+                            <tr class="table-warning">
+                        {% endif %}
+                            <td>{{ forloop.counter }}. {{ sale_change.product_name }}</td>
+                            <td class="text-center">{{ sale_change.amount_in_db }}</td>
+                            <td class="text-center">- {{ sale_change.expanse }}</td>
+                            <td class="text-center">
+                                {% if sale_change.result == None %}
+                                    <p>нет данных</p>
+                                {% else %}
+                                    {{ sale_change.result }}
+                                {% endif %}
+                            </td>
+                        </tbody>
+                {% endfor %}
+            </table>
+            {% if permission == 400 %}
+                <button type="submit" class="btn btn-danger mt-2">Добавить данные</button>
+            {% elif permission == 200 %}
+                <button type="submit" class="btn btn-success mt-2">Добавить данные</button>
+            {% endif %}
+            <button class="btn btn-primary mt-2"><a class="text-reset fw-bold text-decoration-none" href="{% url 'home' %}">На главную</a></button>
+        </div>
+    </div>
+</form>
+{% endblock %}

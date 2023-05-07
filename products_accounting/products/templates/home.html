@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card" style="width: 100%;">
+    <div class="card-body text-center">
+      <div class="alert alert-danger" role="alert">
+        Только для сотрудников "Мастер минутка"!
+      </div>
+      <p class="card-text m-2">Если вы сотрудник и вам нужен доступ напишите администратору</p>
+      <a href="https://t.me/espadane" class="btn btn-dark">Телеграм</a>
+      <p class="card-text m-2">Или войдите в свою учетную запись</p>
+      <a href="{% url 'loginaccount' %}" class="btn btn-dark">Войти</a>
+    </div>
+  </div>
+{% endblock content %}
